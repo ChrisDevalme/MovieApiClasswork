@@ -1,5 +1,5 @@
 const Movie = require("../models/movie")
-
+const Performer = require('../models/performer')
 // router.post('/', movieCtrl.create)
 // POST /movies: Accepst Movie Data and Creates A Movie
 
@@ -40,5 +40,12 @@ exports.show = async function show (req, res) {
 }
 
 exports.addPerformer = async function addPerformer (req, res) {
-
+    try {
+        const foundPerformer = await Perfprmer.findOne({ _id: req.params.performerId })
+        if(!foundPerformer) throw new Error(`Could not locate Performer with Id ${req.params.performerId}`)
+        const foundMovie = await Movie.findOne({ _id: req.params.movieId })
+        if(!foundMovie) throw new Error(`Could not locate Performer with Id ${req.params.movieId}`)
+    } catch (error) {
+        res.status(400).json({ msg: error.message })
+    }
 }
